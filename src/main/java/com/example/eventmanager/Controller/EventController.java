@@ -15,10 +15,19 @@ public class EventController {
     //BASIC CRUD ENDPOINTS
     @PostMapping("/add")
     public ApiResponse addEvent(@RequestBody Event newEvent){
+        //check id
         for(Event e: events){
             if(e.getId().equalsIgnoreCase(newEvent.getId()))
                 return new ApiResponse("The ID: " + newEvent.getId() + " is already used please enter another ID.");
         }
+        //check capacity
+        if(newEvent.getCapacity() < 0)
+            return new ApiResponse("Capacity must be positive number.");
+        //check dates
+        if(newEvent.getStartDate().isAfter(newEvent.getEndDate())){
+            return new ApiResponse("Start date must be before end date");
+        }
+
         events.add(newEvent);
         return new ApiResponse("Event added successfully.");
     }
@@ -30,6 +39,14 @@ public class EventController {
 
     @PutMapping("/update/{id}")
     public ApiResponse updateEvent(@PathVariable String id, @RequestBody Event newEvent){
+        //check capacity
+        if(newEvent.getCapacity() < 0)
+            return new ApiResponse("Capacity must be positive number.");
+        //check dates
+        if(newEvent.getStartDate().isAfter(newEvent.getEndDate())){
+            return new ApiResponse("Start date must be before end date");
+        }
+
         for(int i=0; i < events.size(); i++){
             if(events.get(i).getId().equalsIgnoreCase(id)){
                 events.set(i, newEvent);
@@ -54,6 +71,10 @@ public class EventController {
     //EXTRA ENDPOINTS
     @PutMapping("/update/capacity/{id}/{capacity}")
     public ApiResponse updateCapacity(@PathVariable String id, @PathVariable int capacity){
+        //check capacity
+        if(capacity < 0)
+            return new ApiResponse("Capacity must be positive number.");
+
         for (Event event : events) {
             if (event.getId().equalsIgnoreCase(id)) {
                 event.setCapacity(capacity);
@@ -63,7 +84,7 @@ public class EventController {
         return new ApiResponse("Event with ID: " + id + " not found.");
     }
 
-    @GetMapping("get/id/{id}")
+    @GetMapping("/get/id/{id}")
     public Event getById(@PathVariable String id){
         for (Event event : events) {
             if (event.getId().equalsIgnoreCase(id)) {
