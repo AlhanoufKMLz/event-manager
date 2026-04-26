@@ -49,4 +49,27 @@ public class EventController {
         }
         return new ApiResponse("Event with ID: " + id + " not found.");
     }
+
+
+    //EXTRA ENDPOINTS
+    @PutMapping("/update/capacity/{id}/{capacity}")
+    public ApiResponse updateCapacity(@PathVariable String id, @PathVariable int capacity){
+        for (Event event : events) {
+            if (event.getId().equalsIgnoreCase(id)) {
+                event.setCapacity(capacity);
+                return new ApiResponse("Event capacity updated successfully.");
+            }
+        }
+        return new ApiResponse("Event with ID: " + id + " not found.");
+    }
+
+    @GetMapping("get/id/{id}")
+    public Event getById(@PathVariable String id){
+        for (Event event : events) {
+            if (event.getId().equalsIgnoreCase(id)) {
+                return event;
+            }
+        }
+        return null;
+    }
 }
