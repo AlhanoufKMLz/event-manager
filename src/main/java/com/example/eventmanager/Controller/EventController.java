@@ -32,7 +32,7 @@ public class EventController {
         return new ApiResponse("Event added successfully.");
     }
 
-    @GetMapping("/get/all")
+    @GetMapping("/get-all")
     public ArrayList<Event> getAllEvents(){
         return events;
     }
@@ -69,7 +69,7 @@ public class EventController {
 
 
     //EXTRA ENDPOINTS
-    @PutMapping("/update/capacity/{id}/{capacity}")
+    @PutMapping("/update-capacity/{id}/{capacity}")
     public ApiResponse updateCapacity(@PathVariable String id, @PathVariable int capacity){
         //check capacity
         if(capacity < 0)
@@ -84,7 +84,7 @@ public class EventController {
         return new ApiResponse("Event with ID: " + id + " not found.");
     }
 
-    @GetMapping("/get/id/{id}")
+    @GetMapping("/get-id/{id}")
     public Event getById(@PathVariable String id){
         for (Event event : events) {
             if (event.getId().equalsIgnoreCase(id)) {
